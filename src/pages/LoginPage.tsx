@@ -1,6 +1,9 @@
+import { loginUser } from "@/api/authApi";
 import { Button } from "@/components/ui/button";
 import FieldError from "@/components/ui/FieldError";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
+import { isAxiosError } from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +11,7 @@ import { toast } from "sonner";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{
@@ -16,7 +20,7 @@ const LoginPage = () => {
   }>({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     console.log("able to submit!");
     e.preventDefault();
     if (isLoading) return;
@@ -30,13 +34,35 @@ const LoginPage = () => {
       validationErrors.password = "Required";
     }
     setErrors(validationErrors);
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("keys length is 0");
-      setIsLoading(true);
-      setTimeout(() => {
-        toast.success("Welcome back! 🎉");
-        navigate("/dashboard");
-      }, 5000);
+    if (Object.keys(validationErrors).length) return;
+    setIsLoading(true);
+    try {
+      const response = await loginUser({ email, password });
+      login(response.token);
+      toast.success("Welcome back!");
+      navigate("/dashboard");
+    } catch (err: unknown) {
+      if (isAxiosError(err)) {
+        if (!err.response) {
+          toast.error(
+            "🚧 Our servers are currently unavailable. Please try again later."
+          );
+        } else if (err.response.status === 401) {
+          // backend should return { message: "Invalid credentials" }
+          toast.error(
+            err.response.data?.message || "Invalid email or password."
+          );
+        } else {
+          toast.error("Something went wrong. Please try again.");
+        }
+      } else {
+        console.error(err);
+        toast.error(
+          "An unexpected error occurred. Server might be down. Please try again!"
+        );
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
