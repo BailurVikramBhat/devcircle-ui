@@ -38,9 +38,9 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       const response = await loginUser({ email, password });
-      login(response.token);
+      login(response.userId, response.token);
       toast.success("Welcome back!");
-      navigate("/dashboard");
+      navigate(`/dashboard/${response.userId}`);
     } catch (err: unknown) {
       if (isAxiosError(err)) {
         if (!err.response) {

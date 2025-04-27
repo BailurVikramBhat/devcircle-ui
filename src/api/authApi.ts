@@ -24,13 +24,35 @@ export interface ILoginRequest {
 }
 
 export interface ILoginResponse {
+  userId: string;
   token: string;
-  message: string;
 }
 
 export async function loginUser(
   payload: ILoginRequest
 ): Promise<ILoginResponse> {
   const response = await apiClient.post<ILoginResponse>("/login", payload);
+  return response.data;
+}
+
+export interface IRegisterRequest {
+  fullName: string;
+  email: string;
+  password: string;
+}
+
+export interface IRegisterResponse {
+  userId: string;
+  token: string;
+  message: string;
+}
+
+export async function registerUser(
+  payload: IRegisterRequest
+): Promise<IRegisterResponse> {
+  const response = await apiClient.post<IRegisterResponse>(
+    "/register",
+    payload
+  );
   return response.data;
 }
