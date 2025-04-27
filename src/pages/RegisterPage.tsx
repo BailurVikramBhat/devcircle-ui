@@ -12,8 +12,12 @@ import {
 } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { registerUser } from "@/api/authApi";
+import { isAxiosError } from "axios";
 
 const RegisterPage = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -52,7 +56,7 @@ const RegisterPage = () => {
     }
   };
 
-  const handleConfirmRegistration = () => {
+  const handleConfirmRegistration = async () => {
     if (isLoading) return;
     const validationErrors: typeof errors = {};
     if (!confirmPassword.trim()) {
@@ -63,17 +67,45 @@ const RegisterPage = () => {
 
     if (confirmPassword === password) {
       setIsLoading(true);
-      setTimeout(() => {
-        setConfirmPassword("");
+      setConfirmPassword("");
+      setIsLoading(false);
+      try {
+        const { userId, token, message } = await registerUser({
+          fullName,
+          email,
+          password,
+        });
+        toast.success(message);
+        toast.info("Here is your generated userId: " + userId);
+        login(userId, token);
+        navigate(`/dashboard/${userId}`);
+      } catch (err: unknown) {
+        if (isAxiosError(err)) {
+          if (!err.response) {
+            toast.error(
+              "🚧 Our servers are currently unavailable. Please try again later."
+            );
+          } else if (err.response.status === 409) {
+            // backend should return { message: "Invalid credentials" }
+            toast.error(
+              err.response.data?.message || "User with email already exists"
+            );
+          } else {
+            toast.error("Something went wrong. Please try again.");
+          }
+        } else {
+          console.error(err);
+          toast.error(
+            "An unexpected error occurred. Server might be down. Please try again!"
+          );
+        }
+      } finally {
         setIsLoading(false);
-        toast.success(`Welcome ${fullName}! Registration confirmed 🚀`);
-        setConfirmDialogOpen(false);
-        setFullName("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-        navigate("/login");
-      }, 3000);
+      }
+      // toast.success(`Welcome ${fullName}! Registration confirmed 🚀`);
+      setConfirmDialogOpen(false);
+      setEmail("");
+      setConfirmPassword("");
     } else {
       toast.error("Passwords do not match. Please try again.");
     }
