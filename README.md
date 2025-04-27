@@ -42,6 +42,7 @@ src/
 │ ├── dialog.tsx
 │ ├── FieldError.tsx
 ├── pages/
+│ ├── DashboardPage.tsx
 │ ├── RegisterPage.tsx
 │ ├── LoginPage.tsx
 ├── App.tsx
@@ -58,8 +59,8 @@ src/
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/your-username/devcircle-frontend.git
-   cd devcircle-frontend
+   git clone https://github.com/BailuVikramBhat/devcircle-ui.git
+   cd devcircle-ui
    ```
 
 2. Install dependencies:
@@ -74,13 +75,13 @@ src/
    npm run dev
    ```
 
-4. Visit `http://localhost:5173` in your browser.
+4. Visit `http://localhost:5173/register` in your browser.
 
 ---
 
 ## 📌 Upcoming Plans (v2)
 
-- 🔒 Real Authentication API Integration
+- 🔒 Real Authentication API Integration - DONE(✅)
 - 🛡️ Auth Context Provider and Protected Routes
 - 🚀 Dashboard Landing Page
 - 🧹 Codebase Refactor with `react-hook-form` + `zod`
