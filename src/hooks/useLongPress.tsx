@@ -24,22 +24,16 @@ const useLongPress = (onClick: () => void, onLongPress: () => void) => {
   }
 
   function handleOnClick() {
-    console.log('handleOnClick');
     if (isLongPress.current) {
-      console.log('Is long press - not continuing.');
       return;
     }
   }
 
-  function handleOnMouseDown(e: React.MouseEvent) {
-    console.log('handleOnMouseDown');
-    e.stopPropagation();
+  function handleOnMouseDown() {
     startPressTimer();
   }
 
-  function handleOnMouseUp(e: React.MouseEvent) {
-    e.preventDefault();
-    console.log('handleOnMouseUp');
+  function handleOnMouseUp() {
     clearPressTimer();
     if (!isLongPress.current) {
       onClick(); // Trigger click action if it's not a long press
@@ -47,15 +41,11 @@ const useLongPress = (onClick: () => void, onLongPress: () => void) => {
     resetState();
   }
 
-  function handleOnTouchStart(e: React.TouchEvent) {
-    console.log('handleOnTouchStart');
-    e.stopPropagation();
+  function handleOnTouchStart() {
     startPressTimer();
   }
 
-  function handleOnTouchEnd(e: React.TouchEvent) {
-    e.preventDefault();
-    console.log('handleOnTouchEnd');
+  function handleOnTouchEnd() {
     clearPressTimer();
     if (!isLongPress.current) {
       onClick(); // Trigger click action if it's not a long press
