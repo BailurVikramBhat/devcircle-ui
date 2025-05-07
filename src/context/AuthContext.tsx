@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useState } from "react";
 
 interface IAuthContextType {
   token: string | null;
@@ -6,9 +6,13 @@ interface IAuthContextType {
   login: (userId: string, token: string) => void;
   logout: () => void;
 }
-const AuthContext = createContext<IAuthContextType | undefined>(undefined);
+export const AuthContext = createContext<IAuthContextType | undefined>(
+  undefined
+);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [token, setToken] = useState<string | null>(() =>
     localStorage.getItem("dc_token")
   );
@@ -33,11 +37,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
-  return ctx;
-}
+};
