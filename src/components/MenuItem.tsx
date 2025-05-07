@@ -35,12 +35,6 @@ const MenuItem = ({
 
   const navRef = useRef<HTMLAnchorElement>(null);
 
-  // useEffect(() => {
-  //   navRef.current?.addEventListener('contextmenu', (e) => {
-  //     e.preventDefault();
-  //   });
-  // }, []);
-
   const handleContextMenu: (event: MouseEvent) => void = (event) => {
     event.preventDefault();
   };
