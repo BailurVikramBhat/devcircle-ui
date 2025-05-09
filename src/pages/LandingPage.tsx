@@ -1,7 +1,5 @@
-// import { useParams } from 'react-router-dom';
-
 import HomePageSidebar from '@/components/HomepageSidebar';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Dashboard from './sub-pages/Dashboard';
 import Posts from './sub-pages/Posts';
 import Settings from './Settings';
@@ -9,7 +7,6 @@ import Notifications from './sub-pages/Notifications';
 import Profile from './sub-pages/Profile';
 
 const LandingPage = () => {
-  // const { userId } = useParams<{ userId: string }>();
   return (
     <>
       <div className='flex flex-col h-screen w-screen bg-accent'>
