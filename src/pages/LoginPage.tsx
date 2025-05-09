@@ -40,7 +40,7 @@ const LoginPage = () => {
       const response = await loginUser({ email, password });
       login(response.userId, response.token);
       toast.success('Welcome back!');
-      navigate('/dashboard');
+      navigate(`/${response.userId}/dashboard`);
     } catch (err: unknown) {
       if (isAxiosError(err)) {
         if (!err.response) {
