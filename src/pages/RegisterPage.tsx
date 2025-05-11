@@ -78,7 +78,7 @@ const RegisterPage = () => {
         toast.success(message);
         toast.info('Here is your generated userId: ' + userId);
         login(userId, token);
-        navigate(`/dashboard`);
+        navigate(`/${userId}/dashboard`);
       } catch (err: unknown) {
         if (isAxiosError(err)) {
           if (!err.response) {
