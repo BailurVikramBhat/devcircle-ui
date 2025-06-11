@@ -9,13 +9,13 @@ import Profile from './sub-pages/Profile';
 const LandingPage = () => {
   return (
     <>
-      <div className='flex flex-col h-screen w-screen bg-accent'>
+      <div className='flex flex-col min-h-screen max-w-screen bg-accent'>
         {/* content area */}
         <div className='flex h-full '>
           {/* sidebar */}
           <HomePageSidebar />
           {/* main */}
-          <div className='flex-1 mt-4 mr-2 flex justify-center rounded-3xl bg-card'>
+          <div className='flex-1 mt-4 mr-2 flex min-h-screen justify-center rounded-3xl bg-card'>
             <Routes>
               <Route path='dashboard' element={<Dashboard />} />
               <Route path='dashboard/posts' element={<Posts />} />
